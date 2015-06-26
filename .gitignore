@@ -1,2 +1,7 @@
 *.pyc
-
+.metadata/
+.project
+.pydevproject
+.settings/
+Result.xls
+Roll Number Info.xls
