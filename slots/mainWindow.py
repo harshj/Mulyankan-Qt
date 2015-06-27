@@ -9,7 +9,7 @@
 
 import os , subprocess
 from PyQt4 import QtCore, QtGui
-from system import result_evaluator
+from system import result_evaluator , centre_allocator
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -161,6 +161,7 @@ class Ui_MainWindow(object):
         self.center_info_select = QtGui.QPushButton(self.center_alloc_tab)
         self.center_info_select.setObjectName(_fromUtf8("center_info_select"))
         self.center_info_select.clicked.connect(self.select_file)
+        self.center_info_select.setEnabled(False)
         self.gridLayout_3.addWidget(self.center_info_select, 7, 0, 1, 1)
         
         self.center_info_path = QtGui.QLabel(self.center_alloc_tab)
@@ -185,6 +186,8 @@ class Ui_MainWindow(object):
         
         self.center_alloc_submit = QtGui.QPushButton(self.center_alloc_tab)
         self.center_alloc_submit.setObjectName(_fromUtf8("center_alloc_submit"))
+        self.center_alloc_submit.clicked.connect(self.center_alloc_submit_slot)
+        self.center_alloc_submit.setEnabled(False)
         self.gridLayout_3.addWidget(self.center_alloc_submit, 8, 1, 1, 1)
         
         self.label_10 = QtGui.QLabel(self.center_alloc_tab)
@@ -352,7 +355,7 @@ class Ui_MainWindow(object):
             path = path[ len(path) - 1 ].split('.')
             if( path[ len(path) - 1 ] == 'xls'):
                 msg = 'Select Center Info File : Success'
-                #center_info_select_success = True
+                self.center_alloc_submit.setEnabled(True)
             
             else:
                 msg = 'Invalid File Center Info File : Select .xls file'
@@ -367,7 +370,7 @@ class Ui_MainWindow(object):
             path = path[ len(path) - 1 ].split('.')
             if( path[ len(path) - 1 ] == 'xls'):
                 msg = 'Select Student Info File : Success'
-                #student_info_select_success = True
+                self.center_info_select.setEnabled(True)
             
             else:
                 msg = 'Invalid File Student Info : Select .xls file'
@@ -412,6 +415,36 @@ class Ui_MainWindow(object):
                 
             self.response_path.setText('')
             self.key_path.setText('')
+            
+            
+    def center_alloc_submit_slot(self):
+        
+        if( self.center_alloc_submit.text() == 'Submit' ):
+            
+            center_info_path = self.center_info_path.text()
+            student_info_path =self.student_info_path.text()
+            
+            success = centre_allocator.allocate(student_info_path , center_info_path)
+            
+            if(success):
+                msg = 'Roll Number Generation and Center Allocation Success.'
+                self.center_alloc_submit.setText('View')
+            else:
+                msg = 'Roll Number Generation and Center Allocation not Successful.'
+                
+            self.statusbar.showMessage(msg)
+            
+        if(self.center_alloc_submit.text() == 'View'):
+            
+            if(os.name == 'posix'):
+                subprocess.call('xdg-open Roll\ Number\ Information.xls' , shell=True)
+            
+            if(os.name == 'nt'):
+                subprocess.call(("cmd \c start Roll Number Information.xls"))
+                
+            self.response_path.setText('')
+            self.key_path.setText('')
+            
                 
             
             
