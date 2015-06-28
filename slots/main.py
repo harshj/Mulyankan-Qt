@@ -2,7 +2,7 @@
 
 
 from PyQt4 import QtGui
-import mainWindow
+import mainWindow , advanced_eval_options
 
 if __name__ == "__main__":
     import sys

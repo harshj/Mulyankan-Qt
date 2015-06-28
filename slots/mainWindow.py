@@ -1,15 +1,9 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'ui/MainWindow.ui'
-#
-# Created: Wed Jun 24 17:10:26 2015
-#      by: PyQt4 UI code generator 4.10.4
-#
-# WARNING! All changes made in this file will be lost!
 
 import os , subprocess
 from PyQt4 import QtCore, QtGui
+import advanced_eval_options
 from system import result_evaluator , centre_allocator
+from system.constants import NO_OF_QUES
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -27,13 +21,13 @@ except AttributeError:
 
 class Ui_MainWindow(object):
     
-    #key_select_success = response_select_success = False 
-    #center_info_select_success = student_info_select_success = False
+    no_of_ques = NO_OF_QUES;
+    ques_not_eval = '' 
     
     def setupUi(self, MainWindow):
         self.MainWindow = MainWindow
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(318, 400)
+        MainWindow.resize(360, 400)
         
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -42,14 +36,14 @@ class Ui_MainWindow(object):
         
         MainWindow.setSizePolicy(sizePolicy)
         MainWindow.setMinimumSize(QtCore.QSize(300, 400))
-        MainWindow.setMaximumSize(QtCore.QSize(318, 400))
+        MainWindow.setMaximumSize(QtCore.QSize(400, 400))
         
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         
         self.tabWidget = QtGui.QTabWidget(self.centralwidget)
         self.tabWidget.setEnabled(True)
-        self.tabWidget.setGeometry(QtCore.QRect(9, 10, 304, 330))
+        self.tabWidget.setGeometry(QtCore.QRect(9, 10, 340, 330))
         
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -57,11 +51,10 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.tabWidget.sizePolicy().hasHeightForWidth())
         self.tabWidget.setSizePolicy(sizePolicy)
         
-        self.tabWidget.setMinimumSize(QtCore.QSize(300, 300))
-        self.tabWidget.setMaximumSize(QtCore.QSize(400, 330))
+        self.tabWidget.setMinimumSize(QtCore.QSize(280, 330))
+        self.tabWidget.setMaximumSize(QtCore.QSize(380, 280))
         self.tabWidget.setTabPosition(QtGui.QTabWidget.North)
         self.tabWidget.setTabShape(QtGui.QTabWidget.Rounded)
-        self.tabWidget.setIconSize(QtCore.QSize(16, 16))
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
         
         self.result_eval_tab = QtGui.QWidget()
@@ -78,9 +71,14 @@ class Ui_MainWindow(object):
         font.setItalic(True)
         font.setWeight(75)
         
+        font_input = QtGui.QFont()
+        font_input.setFamily(_fromUtf8("Arial"))
+        font_input.setPointSize(10)        
+        
         self.label_3.setFont(font)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.gridLayout_2.addWidget(self.label_3, 0, 0, 1, 1)
+        
         self.paper_code_list = QtGui.QComboBox(self.result_eval_tab)
         
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
@@ -134,7 +132,17 @@ class Ui_MainWindow(object):
         self.result_eval_submit.setObjectName(_fromUtf8("result_eval_submit"))
         self.result_eval_submit.clicked.connect( self.result_eval_submit_slot )
         self.result_eval_submit.setEnabled(False)
-        self.gridLayout_2.addWidget(self.result_eval_submit, 5, 2, 1, 1)
+        self.gridLayout_2.addWidget(self.result_eval_submit, 6, 2, 1, 1)
+        
+        # Advanced Option button in result_evaluator tab.
+        self.re_eval_submit = QtGui.QPushButton(self.result_eval_tab)
+        self.re_eval_submit.setMinimumSize(QtCore.QSize(110, 30))
+        self.re_eval_submit.setMaximumSize(QtCore.QSize(120, 30))
+        self.re_eval_submit.setObjectName(_fromUtf8("re_eval_submit"))
+        self.re_eval_submit.setText(_fromUtf8('Advanced Options'))
+        self.re_eval_submit.clicked.connect( self.re_eval_submit_slot )
+        self.re_eval_submit.setEnabled(False)
+        self.gridLayout_2.addWidget(self.re_eval_submit, 5, 2, 1 ,1)
         
         self.label_2 = QtGui.QLabel(self.result_eval_tab)
         self.label_2.setFont(font)
@@ -147,10 +155,15 @@ class Ui_MainWindow(object):
         self.gridLayout_2.addWidget(self.label, 1, 0, 1, 3)
         
         self.tabWidget.addTab(self.result_eval_tab, _fromUtf8(""))
+        
+
+        #########################################################################
+        #Centre Allocator Tab.                                                  #
+        #########################################################################
         self.center_alloc_tab = QtGui.QWidget()
         self.center_alloc_tab.setObjectName(_fromUtf8("center_alloc_tab"))
-        self.gridLayout_3 = QtGui.QGridLayout(self.center_alloc_tab)
         
+        self.gridLayout_3 = QtGui.QGridLayout(self.center_alloc_tab)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
         
         self.student_info_select = QtGui.QPushButton(self.center_alloc_tab)
@@ -311,7 +324,7 @@ class Ui_MainWindow(object):
         self.actionManage_Paper_Codes.setText(_translate("MainWindow", "Manage Paper Codes", None))
         
     def select_file(self):
-        path = QtGui.QFileDialog.getOpenFileName()
+        path = QtGui.QFileDialog.getOpenFileName(None , _fromUtf8('Select File') )
          
         button_id = self.MainWindow.sender().objectName()
         
@@ -323,7 +336,6 @@ class Ui_MainWindow(object):
             path = path[ len(path) - 1 ].split('.')
             if( path[ len(path) - 1 ] == 'txt'):
                 msg = 'Select Response File : Success'
-                #response_select_success = True
                 self.key_select.setEnabled(True)
             
             else:
@@ -339,7 +351,7 @@ class Ui_MainWindow(object):
             path = path[ len(path) - 1 ].split('.')
             if( path[ len(path) - 1 ] == 'txt'):
                 msg = 'Select Key File : Success'
-                #key_select_success = True
+                self.re_eval_submit.setEnabled(True)
                 self.result_eval_submit.setEnabled(True)
             
             else:
@@ -383,21 +395,14 @@ class Ui_MainWindow(object):
         
             response_path = self.response_path.text()
             key_path = self.key_path.text()
-        
-            '''if( not response_path and not key_path ):
-            self.statusbar.showMessage('Select Response and Key Files')
-         
-            if( not response_path and key_path ):
-            self.statusbar.showMessage('Select Response File')
-            
-            if( not key_path and response_path ):
-            self.statusbar.showMessage('Select Key File')'''
                 
             if(  response_path and key_path ):        
-                errors = result_evaluator.evaluate(response_path , key_path)
+                errors = result_evaluator.evaluate(response_path , key_path , self.ques_not_eval , self.no_of_ques )
+                
                 if (len(errors) == 0):
                     msg = 'Evaluation Success.'
                     self.result_eval_submit.setText('View Result')
+                
                 else:
                     msg = 'Evaluation not successfull.'
                     for e in errors:
@@ -444,9 +449,26 @@ class Ui_MainWindow(object):
                 
             self.response_path.setText('')
             self.key_path.setText('')
+
+        
+    def re_eval_submit_slot(self):
+        dlg = advanced_eval_options.Ui_Dialog()
+        if dlg.exec_() :
+            no_of_ques , ques_not_eval , errors = dlg.getValues()
+            if no_of_ques:
+                self.no_of_ques = no_of_ques
+            if  ques_not_eval:
+                self.ques_not_eval = ques_not_eval
+            if(errors):
+                if(len(errors) == 1):
+                    msg = errors[0]
+                else:
+                    msg = 'More than one errors occurred!!!'
+            else:
+                msg = 'Result Evaluator Advanced options successfully selected.' 
             
-                
-            
+            self.statusbar.showMessage(msg)
             
         
-
+                   
+        
