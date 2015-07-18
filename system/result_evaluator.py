@@ -1,10 +1,9 @@
 # Module to evaluate results and save them to Result.xls 
 
-import string
 import xlwt
 import xlrd
 import os
-from shutil import copy	#To make backup of results
+#from shutil import copy	#To make backup of results
 
 from data import get_data
 from result import get_result, analyze
@@ -70,16 +69,16 @@ def evaluate(response_path , key_path , questions = "" , NO_OF_QUESTIONS = NO_OF
 	    		ws.write( i , j + 6 , stats[j] )
 	f.close()
 	
-	#copy(path + "Result.xls" , path + "backup" + os.sep + "Previous Result.bak")		#Make backup of previous result.
+	#copy(path + "Result.xls" , path + "backup" + os.sep + "Result.bak")		#Make backup of previous result.
 	wb.save("Result.xls")
 	error = analyze()
 	if error : 
 	    for e in error:
-			errors.append('AnalyzeError :' + e)
+	    	errors.append('AnalyzeError :' + e)
 	return errors
 
 #show function returns a list of list which contains all the data of Result.xls
-
+#Not used in Qt version.
 def show(n):
 	path = SYS_ROOT + os.sep + 'system' + os.sep + 'data' + os.sep + 'Result.xls'
 	errors = []

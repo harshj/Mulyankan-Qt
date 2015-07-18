@@ -1,5 +1,5 @@
 #This contains the system default  constants which can be changed as per the requirements.
-import os
+#import os
 
 #SYS_ROOT = os.curdir #/path/to/application/root		#Must be changed to the application root while Deploying.
 NO_OF_QUES = 150

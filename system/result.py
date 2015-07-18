@@ -5,12 +5,12 @@ import xlrd , xlwt
 from xlutils.copy import copy
 
 from constants import (
-						CORRECT_MARKS,
-						INCORRECT_MARKS,
-						INVALID_MARKS,
-						MISSED_MARKS,
+                        CORRECT_MARKS,
+                        INCORRECT_MARKS,
+                        INVALID_MARKS,
+                        MISSED_MARKS
 					)
- 
+
 
 #Module to calculate result for each candidate and returns the correct# , wrong# , missed# , total score and student wise analysis of questions.
 def get_result(key_path , qpset , NO_OF_QUESTIONS , response , questions) :
@@ -28,29 +28,29 @@ def get_result(key_path , qpset , NO_OF_QUESTIONS , response , questions) :
     stats = ['-' for i in key]		#Maintain question wise stats.
     i = 1
     for word in key :
-		if i not in questions:    #Check question is to be evaluated
+        if i not in questions:    #Check question is to be evaluated
 			
-			if response[ i - 1] != '*':			# Check Invalid response
+            if response[ i - 1] != '*':			# Check Invalid response
 				
-				if response[ i-1 ] != ' ' :		#Check question not missed
+                if response[ i-1 ] != ' ' :		#Check question not missed
 					
-					if response[ i-1 ] == word :	
-						correct+=1			#Correct response
-						stats[ i-1 ] = 'c'
+                    if response[ i-1 ] == word :	
+                        correct+=1			#Correct response
+                        stats[ i-1 ] = 'c'
 					
-					else :
-						wrong+=1			#Incorrect response
-						stats[ i-1 ] = 'w'
+                    else :
+                        wrong+=1			#Incorrect response
+                        stats[ i-1 ] = 'w'
 				
-				else:
-					missed += 1
-					stats[ i-1 ] = 'm'
+                else:
+                    missed += 1
+                    stats[ i-1 ] = 'm'
 			
-			else:
-				stats[ i - 1] = '*'
-				invalid += 1
+            else:
+                stats[ i - 1] = '*'
+                invalid += 1
 		
-		i += 1
+        i += 1
 
     score = CORRECT_MARKS * correct + INCORRECT_MARKS * wrong + INVALID_MARKS * invalid + MISSED_MARKS * missed
     f1.close()

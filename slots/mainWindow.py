@@ -1,8 +1,9 @@
+#!/usr/lib/env python
 
 import os , subprocess
 from PyQt4 import QtCore, QtGui
 import advanced_eval_options
-from system import result_evaluator , centre_allocator
+from system import result_evaluator , centre_allocator , handle_uploads
 from system.constants import NO_OF_QUES
 
 try:
@@ -370,7 +371,7 @@ class Ui_MainWindow(object):
                 self.center_alloc_submit.setEnabled(True)
             
             else:
-                msg = 'Invalid File Center Info File : Select .xls file'
+                msg = 'Invalid Center Info File : Select .xls file'
             
             self.statusbar.showMessage(msg)
             
@@ -378,14 +379,20 @@ class Ui_MainWindow(object):
             self.student_info_path.setText(path)
             
             #Check Extension of file.
-            path = path.split(os.sep)
-            path = path[ len(path) - 1 ].split('.')
-            if( path[ len(path) - 1 ] == 'xls'):
-                msg = 'Select Student Info File : Success'
-                self.center_info_select.setEnabled(True)
+            temp_path = path.split(os.sep)
+            temp_path = temp_path[ len(temp_path) - 1 ].split('.')
+            
+            if( temp_path[ len(temp_path) - 1 ] == 'xls'):
+                
+                errors = handle_uploads.handle_student_info(path)
+                if( len(errors) == 0 ):
+                    msg = 'Select Student Info File : Success'
+                    self.center_info_select.setEnabled(True)
+                else:
+                    msg = 'Invalid Student Info : '+ errors[0]
             
             else:
-                msg = 'Invalid File Student Info : Select .xls file'
+                msg = 'Invalid Student Info : Select .xls file'
                 
             self.statusbar.showMessage(msg)
             
