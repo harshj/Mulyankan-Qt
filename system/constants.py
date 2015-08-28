@@ -2,6 +2,8 @@
 #import os
 
 #SYS_ROOT = os.curdir #/path/to/application/root		#Must be changed to the application root while Deploying.
+#### Change SYS_ROOT in mainWindow.py ####
+
 NO_OF_QUES = 150
 PASSIVE_DATA_SIZE = 84
 BOOKLET_CODE_SIZE = 22
@@ -13,3 +15,4 @@ MISSED_MARKS = 0
 
 ROLL_SIZE = 13
 
+RESULT_HISTORY = 5

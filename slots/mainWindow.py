@@ -1,8 +1,14 @@
 #!/usr/lib/env python
 
-import os , subprocess
+import os,subprocess
 from PyQt4 import QtCore, QtGui
-import advanced_eval_options
+import advanced_eval_options, view_file, delete_file
+import sys
+
+PROJECT_ROOT = "D:\\Mulyankan\\Mulyankan-Qt"
+if PROJECT_ROOT not in sys.path:	
+    sys.path.append(PROJECT_ROOT)
+
 from system import result_evaluator , centre_allocator , handle_uploads
 from system.constants import NO_OF_QUES
 
@@ -76,6 +82,7 @@ class Ui_MainWindow(object):
         font_input.setFamily(_fromUtf8("Arial"))
         font_input.setPointSize(10)        
         
+        #Paper Code label in result_eval tab
         self.label_3.setFont(font)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.gridLayout_2.addWidget(self.label_3, 0, 0, 1, 1)
@@ -87,6 +94,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.paper_code_list.sizePolicy().hasHeightForWidth())
         
+        # Paper Code list in result_eval tab. -- not used for now.
         self.paper_code_list.setSizePolicy(sizePolicy)
         self.paper_code_list.setMinimumSize(QtCore.QSize(70, 30))
         self.paper_code_list.setMaximumSize(QtCore.QSize(70, 30))
@@ -134,6 +142,15 @@ class Ui_MainWindow(object):
         self.result_eval_submit.clicked.connect( self.result_eval_submit_slot )
         self.result_eval_submit.setEnabled(False)
         self.gridLayout_2.addWidget(self.result_eval_submit, 6, 2, 1, 1)
+        
+        # View Previous button in result_evaluator tab.
+        self.view_previous_result = QtGui.QPushButton(self.result_eval_tab)
+        self.view_previous_result.setMinimumSize(QtCore.QSize(100, 30))
+        self.view_previous_result.setMaximumSize(QtCore.QSize(100, 30))
+        self.view_previous_result.setObjectName(_fromUtf8("view_previous_result"))
+        #self.view_previous_result.clicked.connect( self.delete_old_result )
+        self.view_previous_result.clicked.connect( self.view_result_slot )
+        self.gridLayout_2.addWidget(self.view_previous_result, 7, 2, 1, 4)
         
         # Advanced Option button in result_evaluator tab.
         self.re_eval_submit = QtGui.QPushButton(self.result_eval_tab)
@@ -204,11 +221,13 @@ class Ui_MainWindow(object):
         self.center_alloc_submit.setEnabled(False)
         self.gridLayout_3.addWidget(self.center_alloc_submit, 8, 1, 1, 1)
         
+        # Paper Code List label in Centre Alloc tab. 
         self.label_10 = QtGui.QLabel(self.center_alloc_tab)
         self.label_10.setFont(font)
         self.label_10.setObjectName(_fromUtf8("label_10"))
         self.gridLayout_3.addWidget(self.label_10, 0, 0, 1, 1)
         
+        # Paper Code List --not used for now
         self.paper_code_list_2 = QtGui.QComboBox(self.center_alloc_tab)
         self.paper_code_list_2.setObjectName(_fromUtf8("paper_code_list_2"))
         self.paper_code_list_2.addItem(_fromUtf8(""))
@@ -285,6 +304,8 @@ class Ui_MainWindow(object):
         self.key_select.setText(_translate("MainWindow", "Select", None))
         
         self.result_eval_submit.setText(_translate("MainWindow", "Submit", None))
+        
+        self.view_previous_result.setText(_translate("MainWindow", "Previous Results", None))
         
         self.label_2.setText(_translate("MainWindow", "Insert Key File (.txt) :", None))
         
@@ -395,38 +416,74 @@ class Ui_MainWindow(object):
                 msg = 'Invalid Student Info : Select .xls file'
                 
             self.statusbar.showMessage(msg)
+    
+    def delete_old_result(self):
+        msg = ""
+        path = os.curdir + os.sep + "Results"
+        dlg = delete_file.Ui_Dialog(path)
+        if dlg.exec_():
+            files = dlg.get_filename() 
+            if len(files) == 0:
+                msg = "No file selected!!!"
+            else:
+                for f in files:
+                    file = path + os.sep + f
+                    try:
+                        os.remove(file)
+                    except OSError:
+                        msg = "Some Files could not be removed."
+                    
+        else:
+            msg = "No file selected!!!"
+        
+        self.statusbar.showMessage(msg)
+    
+    def view_result_slot(self, file=""):
+        msg = []
+        path = os.curdir + os.sep + "Results"
+        if file:
+            self.display_file(file)
+        else:
+            dlg = view_file.Ui_Dialog(path)
+            if dlg.exec_():
+                #Get filename to open from dialog.
+                filename = dlg.get_filename()
+                if not filename:
+                    msg = "No file chosen!!!"
+                
+                else:
+                    file = path + os.sep + filename
+                    self.display_file(file)
+                    
+                    msg = "Opened file " + filename
+            else:
+                msg = "No file selected!!!"
+            self.statusbar.showMessage(msg)
+        
+        self.response_path.setText('')
+        self.key_path.setText('')
             
     def result_eval_submit_slot(self):
         
-        if(self.result_eval_submit.text() == 'Submit'):
+        response_path = self.response_path.text()
+        key_path = self.key_path.text()
+                
+        if(  response_path and key_path ):        
+            errors, result_file = result_evaluator.evaluate(response_path , key_path , self.ques_not_eval , self.no_of_ques )
+                
+            if (len(errors) == 0):
+                msg = 'Evaluation Success.'
+                self.view_result_slot(result_file)
+                self.delete_old_result()
+                
+            else:
+                msg = 'Evaluation not successfull.'
+                for e in errors:
+                    msg = msg + ' ' + e
+        else:
+            msg = "Please select the appropriate files first."
         
-            response_path = self.response_path.text()
-            key_path = self.key_path.text()
-                
-            if(  response_path and key_path ):        
-                errors = result_evaluator.evaluate(response_path , key_path , self.ques_not_eval , self.no_of_ques )
-                
-                if (len(errors) == 0):
-                    msg = 'Evaluation Success.'
-                    self.result_eval_submit.setText('View Result')
-                
-                else:
-                    msg = 'Evaluation not successfull.'
-                    for e in errors:
-                        msg = msg + ' ' + e
-        
-            self.statusbar.showMessage(msg)
-            
-        if(self.result_eval_submit.text() == 'View Result'):
-            
-            if(os.name == 'posix'):
-                subprocess.call('xdg-open Result.xls' , shell=True)
-            
-            if(os.name == 'nt'):
-                subprocess.call(("cmd \c start Result.xls"))
-                
-            self.response_path.setText('')
-            self.key_path.setText('')
+        self.statusbar.showMessage(msg)
             
             
     def center_alloc_submit_slot(self):
@@ -476,6 +533,10 @@ class Ui_MainWindow(object):
             
             self.statusbar.showMessage(msg)
             
-        
-                   
+    def display_file(self,file):
+        if(os.name == 'posix'):
+            subprocess.Popen( [ 'xdg-open', file ] )
+            
+        if(os.name == 'nt'):
+            subprocess.call(("cmd \c start %s", file))           
         

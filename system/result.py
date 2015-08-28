@@ -4,7 +4,7 @@ import os
 import xlrd , xlwt
 from xlutils.copy import copy
 
-from constants import (
+from system.constants import (
                         CORRECT_MARKS,
                         INCORRECT_MARKS,
                         INVALID_MARKS,
@@ -15,7 +15,6 @@ from constants import (
 #Module to calculate result for each candidate and returns the correct# , wrong# , missed# , total score and student wise analysis of questions.
 def get_result(key_path , qpset , NO_OF_QUESTIONS , response , questions) :
 
-    #path = SYS_ROOT + os.sep + 'system' + os.sep + 'data' + os.sep
     correct = wrong = missed = invalid = 0
     f1 = open(key_path)
 
@@ -58,10 +57,8 @@ def get_result(key_path , qpset , NO_OF_QUESTIONS , response , questions) :
 	
 #Module to carry out quetion wise analysis of results.
 
-def analyze():
-	#path = SYS_ROOT + os.sep + 'system' + os.sep + 'data' + os.sep
+def analyze(path):
 	errors = []
-	path = "Result.xls" 
 	if(os.path.exists(path)):
 		read_result = xlrd.open_workbook(path)
 		result_sh = read_result.sheet_by_index(0)
@@ -104,9 +101,7 @@ def analyze():
 			analysis_sh.write(i - 5 , 0 , "Q%d"%(i - 5))
 			analysis_sh.write(i - 5 , 1 , correct)
 			analysis_sh.write(i - 5 , 2 , wrong)
-			analysis_sh.write(i - 5 , 3 , missed)
-
-		
+			analysis_sh.write(i - 5 , 3 , missed)	
 	
 	write_result.save(path)
 		

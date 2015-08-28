@@ -6,7 +6,7 @@ import xlwt	#To write to the document
 import os
 from random import shuffle
 from xlutils.copy import copy	#To write to an existing document
-from roll_gen import gen_roll_nos
+from system.roll_gen import gen_roll_nos
 
 def allocate(student_info_path , center_info_path):
 	success = False 

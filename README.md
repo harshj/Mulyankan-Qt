@@ -75,17 +75,12 @@ well in both these environments and though not tested it is also beleived to wor
 
 # Deployment
 To deploy this system , the following modules are needed:
-1. Python v3.4  
-        sudo apt-get install python 3.4
+1. Python v2.7  
+        sudo apt-get install python 2.7
 2. PyQt4
         sudo apt-get install python-pip
         sudo pip install PyQt4
 3. xlrd        
 4. xlwt-future
-		sudo pip install xlrd xlwt-future
 5. xlutils
-	The xlutils package could not be installed for pythonv3.4 and is only available for earlier versions(like pythonv2.7) but since
-	the package itself is also written in python we can easily use it on Pythonv3.4 . The xlutils package can be downloaded and extracted
-	int dist-packages directory of Pythonv3.4. You can also copy the xlutils folder if you have already installed it in earlier python 
-	versions.
-
+		sudo pip install xlrd xlwt-future xlutils

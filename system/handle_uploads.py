@@ -1,4 +1,4 @@
-# This file contains modules to handle uploaded files
+# This file contains modules to handle/verify uploaded files
 
 import os
 import xlrd
