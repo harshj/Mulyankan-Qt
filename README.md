@@ -67,14 +67,12 @@ The defaults can be changed for the result evaluation system as follows:-
 		the desired value. Works only when the booklet code appears in the beginning of every response line.
 	
 # Development
-This system is developed in PYTHON v3.4 and the GUI is built using PyQt4.
+This system is developed in PYTHON v2.7 and the GUI is built using PyQt4.
 Additionally xlrd, xlwt-future and xlutils packages have been used for reading and writing to the Excel spreadsheets (primarily due
 to which the system reads and creates .xls files and not .xlsx files).
 The operating systems used for development and testing are Windows 8.1 and Linux Mint 17 and thus this system works 
 well in both these environments and though not tested it is also beleived to work on Mac OS.
 
-# Deployment
-To deploy this system , the following modules are needed:
 1. Python v2.7  
         sudo apt-get install python 2.7
 2. PyQt4
@@ -84,3 +82,6 @@ To deploy this system , the following modules are needed:
 4. xlwt-future
 5. xlutils
 		sudo pip install xlrd xlwt-future xlutils
+		
+# Installation
+The installer for Mulyankan-Qt is now available at https://drive.google.com/folderview?id=0B8uzLmCUqg74Z3JZV1M4VzJUZk0&usp=sharing

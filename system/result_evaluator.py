@@ -72,7 +72,8 @@ def evaluate(response_path , key_path , questions = "" , NO_OF_QUESTIONS = NO_OF
     
     #copy(path + "Result.xls" , path + "backup" + os.sep + "Result.bak")        #Make backup of previous result.
     timestamp = datetime.datetime.now()
-    filename = str(timestamp) + ".xls"
+    timestamp = str(timestamp).replace(':' , '-')
+    filename = timestamp + ".xls"
     
     if not os.path.exists(path):
         os.mkdir(path)

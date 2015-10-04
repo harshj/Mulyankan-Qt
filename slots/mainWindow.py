@@ -4,10 +4,10 @@ import os,subprocess
 from PyQt4 import QtCore, QtGui
 import advanced_eval_options, view_file, delete_file
 import sys
-
+'''
 PROJECT_ROOT = "D:\\Mulyankan\\Mulyankan-Qt"
 if PROJECT_ROOT not in sys.path:	
-    sys.path.append(PROJECT_ROOT)
+    sys.path.append(PROJECT_ROOT)'''
 
 from system import result_evaluator , centre_allocator , handle_uploads
 from system.constants import NO_OF_QUES
@@ -83,30 +83,30 @@ class Ui_MainWindow(object):
         font_input.setPointSize(10)        
         
         #Paper Code label in result_eval tab
-        self.label_3.setFont(font)
-        self.label_3.setObjectName(_fromUtf8("label_3"))
-        self.gridLayout_2.addWidget(self.label_3, 0, 0, 1, 1)
-        
-        self.paper_code_list = QtGui.QComboBox(self.result_eval_tab)
-        
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.paper_code_list.sizePolicy().hasHeightForWidth())
+#         self.label_3.setFont(font)
+#         self.label_3.setObjectName(_fromUtf8("label_3"))
+#         self.gridLayout_2.addWidget(self.label_3, 0, 0, 1, 1)
+#         
+#         self.paper_code_list = QtGui.QComboBox(self.result_eval_tab)
+#         
+#         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+#         sizePolicy.setHorizontalStretch(0)
+#         sizePolicy.setVerticalStretch(0)
+#         sizePolicy.setHeightForWidth(self.paper_code_list.sizePolicy().hasHeightForWidth())
         
         # Paper Code list in result_eval tab. -- not used for now.
-        self.paper_code_list.setSizePolicy(sizePolicy)
-        self.paper_code_list.setMinimumSize(QtCore.QSize(70, 30))
-        self.paper_code_list.setMaximumSize(QtCore.QSize(70, 30))
-        self.paper_code_list.setEditable(False)
-        self.paper_code_list.setMinimumContentsLength(1)
-        self.paper_code_list.setFrame(True)
-        self.paper_code_list.setObjectName(_fromUtf8("paper_code_list"))
-        self.paper_code_list.addItem(_fromUtf8(""))
-        self.paper_code_list.addItem(_fromUtf8(""))
-        self.paper_code_list.addItem(_fromUtf8(""))
-        self.paper_code_list.addItem(_fromUtf8(""))
-        self.gridLayout_2.addWidget(self.paper_code_list, 0, 3, 1, 1)
+#         self.paper_code_list.setSizePolicy(sizePolicy)
+#         self.paper_code_list.setMinimumSize(QtCore.QSize(70, 30))
+#         self.paper_code_list.setMaximumSize(QtCore.QSize(70, 30))
+#         self.paper_code_list.setEditable(False)
+#         self.paper_code_list.setMinimumContentsLength(1)
+#         self.paper_code_list.setFrame(True)
+#         self.paper_code_list.setObjectName(_fromUtf8("paper_code_list"))
+#         self.paper_code_list.addItem(_fromUtf8(""))
+#         self.paper_code_list.addItem(_fromUtf8(""))
+#         self.paper_code_list.addItem(_fromUtf8(""))
+#         self.paper_code_list.addItem(_fromUtf8(""))
+#         self.gridLayout_2.addWidget(self.paper_code_list, 0, 3, 1, 1)
         
         # Response Select button in result_evaluator tab.
         self.response_select = QtGui.QPushButton(self.result_eval_tab)
@@ -142,6 +142,7 @@ class Ui_MainWindow(object):
         self.result_eval_submit.clicked.connect( self.result_eval_submit_slot )
         self.result_eval_submit.setEnabled(False)
         self.gridLayout_2.addWidget(self.result_eval_submit, 6, 2, 1, 1)
+        #self.result_eval_submit.setStyleSheet("background-color : rgb(151,118,232)")
         
         # View Previous button in result_evaluator tab.
         self.view_previous_result = QtGui.QPushButton(self.result_eval_tab)
@@ -222,19 +223,19 @@ class Ui_MainWindow(object):
         self.gridLayout_3.addWidget(self.center_alloc_submit, 8, 1, 1, 1)
         
         # Paper Code List label in Centre Alloc tab. 
-        self.label_10 = QtGui.QLabel(self.center_alloc_tab)
-        self.label_10.setFont(font)
-        self.label_10.setObjectName(_fromUtf8("label_10"))
-        self.gridLayout_3.addWidget(self.label_10, 0, 0, 1, 1)
-        
-        # Paper Code List --not used for now
-        self.paper_code_list_2 = QtGui.QComboBox(self.center_alloc_tab)
-        self.paper_code_list_2.setObjectName(_fromUtf8("paper_code_list_2"))
-        self.paper_code_list_2.addItem(_fromUtf8(""))
-        self.paper_code_list_2.addItem(_fromUtf8(""))
-        self.paper_code_list_2.addItem(_fromUtf8(""))
-        self.paper_code_list_2.addItem(_fromUtf8(""))
-        self.gridLayout_3.addWidget(self.paper_code_list_2, 0, 2, 1, 1)
+#         self.label_10 = QtGui.QLabel(self.center_alloc_tab)
+#         self.label_10.setFont(font)
+#         self.label_10.setObjectName(_fromUtf8("label_10"))
+#         self.gridLayout_3.addWidget(self.label_10, 0, 0, 1, 1)
+#         
+#         # Paper Code List --not used for now
+#         self.paper_code_list_2 = QtGui.QComboBox(self.center_alloc_tab)
+#         self.paper_code_list_2.setObjectName(_fromUtf8("paper_code_list_2"))
+#         self.paper_code_list_2.addItem(_fromUtf8(""))
+#         self.paper_code_list_2.addItem(_fromUtf8(""))
+#         self.paper_code_list_2.addItem(_fromUtf8(""))
+#         self.paper_code_list_2.addItem(_fromUtf8(""))
+#         self.gridLayout_3.addWidget(self.paper_code_list_2, 0, 2, 1, 1)
         
         self.tabWidget.addTab(self.center_alloc_tab, _fromUtf8(""))
         
@@ -279,12 +280,12 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
         
-        QtCore.QObject.connect(self.paper_code_list, QtCore.SIGNAL(_fromUtf8("textChanged(QString)")), self.label_3.setText)
+        #QtCore.QObject.connect(self.paper_code_list, QtCore.SIGNAL(_fromUtf8("textChanged(QString)")), self.label_3.setText)
         QtCore.QObject.connect(self.response_select, QtCore.SIGNAL(_fromUtf8("clicked()")), self.response_path.repaint)
         QtCore.QObject.connect(self.key_select, QtCore.SIGNAL(_fromUtf8("clicked()")), self.key_path.repaint)
         QtCore.QObject.connect(self.student_info_select, QtCore.SIGNAL(_fromUtf8("clicked()")), self.student_info_path.repaint)
         QtCore.QObject.connect(self.center_info_select, QtCore.SIGNAL(_fromUtf8("clicked()")), self.center_info_path.repaint)
-        QtCore.QObject.connect(self.paper_code_list_2, QtCore.SIGNAL(_fromUtf8("textChanged(QString)")), self.label_10.setText)
+        #QtCore.QObject.connect(self.paper_code_list_2, QtCore.SIGNAL(_fromUtf8("textChanged(QString)")), self.label_10.setText)
         QtCore.QObject.connect(self.actionExit, QtCore.SIGNAL(_fromUtf8("activated()")), MainWindow.close)
         
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -292,12 +293,12 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "MULYANKAN", None))
         
-        self.label_3.setText(_translate("MainWindow", "Paper Code :", None))
+#        self.label_3.setText(_translate("MainWindow", "Paper Code :", None))
         
-        self.paper_code_list.setItemText(0, _translate("MainWindow", "121", None))
-        self.paper_code_list.setItemText(1, _translate("MainWindow", "122", None))
-        self.paper_code_list.setItemText(2, _translate("MainWindow", "123", None))
-        self.paper_code_list.setItemText(3, _translate("MainWindow", "Manage", None))
+#         self.paper_code_list.setItemText(0, _translate("MainWindow", "121", None))
+#         self.paper_code_list.setItemText(1, _translate("MainWindow", "122", None))
+#         self.paper_code_list.setItemText(2, _translate("MainWindow", "123", None))
+#         self.paper_code_list.setItemText(3, _translate("MainWindow", "Manage", None))
         
         self.response_select.setText(_translate("MainWindow", "Select", None))
         
@@ -323,13 +324,13 @@ class Ui_MainWindow(object):
         
         self.center_alloc_submit.setText(_translate("MainWindow", "Submit", None))
         
-        self.label_10.setText(_translate("MainWindow", "Paper Code", None))
-        
-        self.paper_code_list_2.setItemText(0, _translate("MainWindow", "121", None))
-        self.paper_code_list_2.setItemText(1, _translate("MainWindow", "122", None))
-        self.paper_code_list_2.setItemText(2, _translate("MainWindow", "123", None))
-        self.paper_code_list_2.setItemText(3, _translate("MainWindow", "Manage", None))
-        
+#         self.label_10.setText(_translate("MainWindow", "Paper Code", None))
+#         
+#         self.paper_code_list_2.setItemText(0, _translate("MainWindow", "121", None))
+#         self.paper_code_list_2.setItemText(1, _translate("MainWindow", "122", None))
+#         self.paper_code_list_2.setItemText(2, _translate("MainWindow", "123", None))
+#         self.paper_code_list_2.setItemText(3, _translate("MainWindow", "Manage", None))
+
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.center_alloc_tab), _translate("MainWindow", "Center Allocator", None))
         
         self.menuFile.setTitle(_translate("MainWindow", "File", None))
@@ -427,7 +428,7 @@ class Ui_MainWindow(object):
                 msg = "No file selected!!!"
             else:
                 for f in files:
-                    file = path + os.sep + f
+                    file = path + os.sep + str(f)
                     try:
                         os.remove(file)
                     except OSError:
@@ -538,5 +539,5 @@ class Ui_MainWindow(object):
             subprocess.Popen( [ 'xdg-open', file ] )
             
         if(os.name == 'nt'):
-            subprocess.call(("cmd \c start %s", file))           
+            subprocess.call(file , shell = True)           
         

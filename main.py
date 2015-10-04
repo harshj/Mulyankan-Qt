@@ -10,6 +10,7 @@ if __name__ == "__main__":
     MainWindow = QtGui.QMainWindow()
     ui = slots.mainWindow.Ui_MainWindow()
     ui.setupUi(MainWindow)
+    app.setWindowIcon(QtGui.QIcon('logo_small.ico'))
     MainWindow.show()
     MainWindow.raise_()
     sys.exit(app.exec_())
